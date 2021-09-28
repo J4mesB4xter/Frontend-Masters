@@ -36,4 +36,4 @@ for (const [k, v] of Object.entries(data)) {
     template = template.toString().replace(`{${k}}`, v)
 }
 
-console.log(template)
+await writeFile(new URL('index.html', import.meta.url), template)
