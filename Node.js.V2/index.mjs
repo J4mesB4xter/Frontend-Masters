@@ -22,3 +22,18 @@
 // }
 
 //this creates a "named export" which we will import diretly
+import { readFile, writeFile } from 'fs/promises'
+//accessing the fs (filesystem) allows a ton of powerful processing inside of node and a lot of system tools that are useful
+
+let template = await readFile(new URL('template.html', import.meta.url))
+
+const data = {
+    title : 'Learn Node.js',
+    body : 'This is the Final HTML',
+}
+
+for (const [k, v] of Object.entries(data)) {
+    template = template.toString().replace(`{${k}}`, v)
+}
+
+console.log(template)
