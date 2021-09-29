@@ -3,4 +3,5 @@
 // const action = require('./index.js')
 
 //importing through ES6 would look more like this:
-import { action } from './index'
+// import { action } from './index'
+console.log('meow')
