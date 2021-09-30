@@ -1,16 +1,22 @@
 {
-  "name": "app",
+  "name": "reddit-cli",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve":"serve",
-    "rm" : "rm"
+    "serve": "serve",
+    "rm": "rm"
+  },
+  "bin": {
+    "reddit": "./reddit.mjs"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "node-fetch": "^3.0.0",
+    "open": "^8.2.1",
+    "serve": "^12.0.1",
+    "yargs": "^17.2.1"
   }
 }
