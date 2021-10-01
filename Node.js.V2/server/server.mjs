@@ -19,6 +19,10 @@ const db = [
     { "id": 1633107624898, "text": "sneak past the sky at midday. avoid eye contact." },
     { "id": 1633108849355, "text": "sunny today" }
 ]
+function notInteger(paramName) {
+    return { data : null, "errors" : {"INVALID QUERY PARAMAETER" : `expected ${paramName} to be integer`}}
+}
+
 
 app.post('/todo', async (req, res) => {
     const newToDo = {
@@ -35,17 +39,20 @@ app.post('/todo', async (req, res) => {
 
 app.get('/todo', (req, res) => {
     let results = db
-    if (req.query.text_starts_with) {
-        results = results.filter(item => item.text.startsWith(req.query.text_starts_with))
+    let qs = req.query
+    if (qs.text_starts_with) {
+        results = results.filter(item => item.text.startsWith(qs.text_starts_with))
     }
-    if (req.query.text_includes) {
-        results = results.filter(item => item.text.includes(req.query.text_includes))
+    if (qs.text_includes) {
+        results = results.filter(item => item.text.includes(qs.text_includes))
     }
-    if (req.query.id_greater_than) {
-        results = results.filter(item => item.id > req.query.id_greater_than)
+    if (qs.id_greater_than) {
+        Number.isNaN(+qs.id_greater_than) && res.json(notInteger("id_greater_than"))
+        results = results.filter(item => item.id > qs.id_greater_than)
     }
-    if (req.query.id_less_than) {
-        results = results.filter(item => item.id < req.query.id_less_than)
+    if (qs.id_less_than) {
+        Number.isNaN(+qs.id_less_than) && res.json(notinteger("id_less_than"))
+        results = results.filter(item => item.id < qs.id_less_than)
     }
     res.json(results)
 })
