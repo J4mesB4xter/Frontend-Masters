@@ -21,7 +21,7 @@ app.post('/todo', async (req, res) => {
     console.log('b')
     const newToDo = {
         id: Date.now(),
-        text: await req.body
+        text: req.body
         // text: req.body.text
     }
     db.push(newToDo)
