@@ -18,14 +18,16 @@ app.use(parsnip)
 const db = []
 
 app.post('/todo', async (req, res) => {
-    console.log('b')
     const newToDo = {
         id: Date.now(),
-        text: req.body
+        text: req.json()?.text
         // text: req.body.text
     }
+    if (!newToDo.text) {
+        return res.json({data : null, "errors" : {"INVALID INPUT ERROR": "user did not submit valid json body"}})
+    }
     db.push(newToDo)
-    res.json(newToDo)
+    res.json({data : newToDo, "errors" : {}})
 })
 
 app.get('/todo', (req, res) => {
@@ -36,7 +38,7 @@ app.get('/todo/:id', (req, res) => {
     const todo = db.find(t => {
         return t.id === +req.params.id
     })
-    res.json({data: todo})
+    res.json({data: todo, "errors" : {}})
 })
 
 app.listen(8000, () => {
