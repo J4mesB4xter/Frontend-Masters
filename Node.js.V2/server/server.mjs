@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { query } from 'express'
 import bp from 'body-parser'
 import { parsnip } from './parsnip.mjs'
 import morgan from 'morgan'
@@ -15,7 +15,10 @@ const app = express()
 app.use(morgan('dev'))
 app.use(parsnip)
 
-const db = []
+const db = [
+    { "id": 1633107624898, "text": "sneak past the sky at midday. avoid eye contact." },
+    { "id": 1633108849355, "text": "sunny today" }
+]
 
 app.post('/todo', async (req, res) => {
     const newToDo = {
@@ -24,21 +27,34 @@ app.post('/todo', async (req, res) => {
         // text: req.body.text
     }
     if (!newToDo.text) {
-        return res.json({data : null, "errors" : {"INVALID INPUT ERROR": "user did not submit valid json body"}})
+        return res.json({ data: null, "errors": { "INVALID INPUT ERROR": "user did not submit valid json body" } })
     }
     db.push(newToDo)
-    res.json({data : newToDo, "errors" : {}})
+    res.json({ data: newToDo, "errors": {} })
 })
 
 app.get('/todo', (req, res) => {
-    res.json(db)
+    let results = db
+    if (req.query.text_starts_with) {
+        results = results.filter(item => item.text.startsWith(req.query.text_starts_with))
+    }
+    if (req.query.text_includes) {
+        results = results.filter(item => item.text.includes(req.query.text_includes))
+    }
+    if (req.query.id_greater_than) {
+        results = results.filter(item => item.id > req.query.id_greater_than)
+    }
+    if (req.query.id_less_than) {
+        results = results.filter(item => item.id < req.query.id_less_than)
+    }
+    res.json(results)
 })
 
 app.get('/todo/:id', (req, res) => {
     const todo = db.find(t => {
         return t.id === +req.params.id
     })
-    res.json({data: todo, "errors" : {}})
+    res.json({ data: todo, "errors": {} })
 })
 
 app.listen(8000, () => {
