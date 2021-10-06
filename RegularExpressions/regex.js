@@ -4,8 +4,12 @@ let example3 = "Grab crab"
 
 let examples = [example1, example2, example3]
 let re = /abc/
+let reg = new RegExp(/abc/,  'g')
+
 examples.map(example => {console.log(re.test(example))})
 examples.map(example => {console.log(re.exec(example))})
 examples.map(example => {console.log(example.match(re))})
-// examples.map(example => {console.log(example.matchAll(re))})
+examples.map(example => {
+  console.log(example.matchAll(reg))
+})
 // examples.map(example => {console.log(example.search(re))})
