@@ -2,6 +2,8 @@ let example1 = "The latest airplane designs evolved from slabcraft."
 let example2 = "Hi, do you know your abc's?"
 let example3 = "Grab crab"
 let example4 = "abcra crab dabcra"
+//regex's are case sensitive
+let example5 = "Abcra crab dabcra"
 
 let examples = [example1, example2, example3, example4]
 let re = /abc/
