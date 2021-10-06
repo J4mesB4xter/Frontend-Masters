@@ -1,4 +1,4 @@
-const { test } = require('@jest/globals');
+const { test, describe } = require('@jest/globals');
 const { getNewUser, mapObjectToArray } = require ('./utils');
 
 describe('mapObjectToArray()', () => {
@@ -15,5 +15,16 @@ describe('mapObjectToArray()', () => {
 
         expect(mockCb.mock.calls.length).toBe(2)
 
+    })
+})
+
+describe('getNewUser()', () => {
+    test('no user found', async () => {
+        expect.assertions(1)
+        try {
+            const user = await getNewUser(1)
+        } catch (e) {
+            expect(e).toBeTruthy()
+        }
     })
 })
