@@ -4,6 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import handler from "serve-handler";
 import nanobuffer from "nanobuffer";
+import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from "constants";
 
 let connections = [];
 
@@ -34,6 +35,22 @@ const server = http2.createSecureServer({
  * Code goes here
  *
  */
+
+server.on("stream", (stream, headers) => {
+  const path = headers[":path"];
+  const method = headers[":method"];
+
+  if (path === '/msgs' && method === 'GET') {
+    console.log('connected to a stream' + stream.id);
+    stream.respond({
+      ":status": 200,
+      "content-type": "text/plain; charset=utf-8",
+    })
+
+    stream.write(JSON.stringify({ msg: getMsgs() }))
+    stream.on("close", () => console.log("disconnected" + stream.id))
+  }
+});
 
 server.on("request", async (req, res) => {
   const path = req.headers[":path"];
