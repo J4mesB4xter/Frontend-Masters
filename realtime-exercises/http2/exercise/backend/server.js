@@ -85,7 +85,7 @@ server.on("request", async (req, res) => {
    res.end
 
    connections.forEach((stream) => {
-     stream.write(JSON.stringify({msg: getMsgs()}));
+     stream.write(JSON.stringify({ msg: getMsgs()}));
    });
   }
 });
